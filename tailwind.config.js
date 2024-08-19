@@ -10,7 +10,9 @@ export default {
         'primary': '#2f80ed',
         'bg-main-primary': '#333333',
         'bg-main-secondary': '#4f4f4f',
-        'line-primary': '#f2f2f2'
+        'line-primary': '#f2f2f2',
+        'chat-color': '#8785ff',
+        'todo-color': '#f8b76b'
       }
     },
   },
