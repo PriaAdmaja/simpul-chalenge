@@ -1,3 +1,4 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -14,7 +15,11 @@ export default {
         'chat-color': '#8785ff',
         'todo-color': '#f8b76b',
         'border-dark': '#828282',
-        'placeholder-color': '#333333'
+        'placeholder-color': '#333333',
+        'back-icon-person-bg': '#e0e0e0'
+      },
+      fontFamily: {
+        'lato': ['lato', ...defaultTheme.fontFamily.sans]
       }
     },
   },

@@ -64,8 +64,8 @@ const QuicksButton = () => {
         </div>
 
         <main
-          className={` bg-white  rounded-md max-h-[80vh] ease-out duration-200 ${
-            selectedMenu === null ? "w-0 h-0" : "w-[734px] h-[737px]"
+          className={` bg-white rounded-md max-h-[80vh] ease-out duration-200 ${
+            selectedMenu === null ? "w-0 h-0" : "w-[734px] h-[737px] px-8 py-6"
           }`}
         >
           {selectedMenu === "chat" && <Chat />}
