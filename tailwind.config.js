@@ -12,7 +12,9 @@ export default {
         'bg-main-secondary': '#4f4f4f',
         'line-primary': '#f2f2f2',
         'chat-color': '#8785ff',
-        'todo-color': '#f8b76b'
+        'todo-color': '#f8b76b',
+        'border-dark': '#828282',
+        'placeholder-color': '#333333'
       }
     },
   },
