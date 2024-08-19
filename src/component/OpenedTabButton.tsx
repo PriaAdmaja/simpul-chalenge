@@ -4,12 +4,17 @@ import todoIcon from "../assets/icons/icon-todo-white.svg";
 
 type OpenedTabProps = {
   icon: "chat" | "todo";
+  onClose: () => void;
 } & ComponentPropsWithoutRef<"button">;
 
-const OpenedTabButton = ({ icon, ...rest }: OpenedTabProps) => {
+const OpenedTabButton = ({ icon, onClose, ...rest }: OpenedTabProps) => {
+
+    const closeTab = () => {
+        onClose();
+    }
   return (
     <section className="flex relative">
-      <div className="w-[68px] h-[68px] rounded-full bg-bg-main-secondary absolute right-3 "></div>
+      <button className="w-[68px] h-[68px] rounded-full bg-bg-main-secondary absolute right-3 hover:scale-105" onClick={closeTab}/>
       <button
         {...rest}
         className={`w-[68px] h-[68px] rounded-full flex justify-center items-center z-10 ${
