@@ -1,19 +1,20 @@
-import { useState } from "react";
 import flashIcon from "../assets/icons/Shape (Stroke).svg";
 import chatIcon from "../assets/icons/icon-chat.svg";
 import bookIcon from "../assets/icons/icon-book.svg";
 import OpenedTabButton from "./OpenedTabButton";
 import Chat from "./chat";
+import { useQuickShow } from "../store/quicksApp";
 
 const QuicksButton = () => {
-  const [showButtonGroup, setShowButtonGroup] = useState<boolean>(false);
-  const [selectedMenu, setSelectedMenu] = useState<"chat" | "todo" | null>(
-    null
-  );
+  const selectedMenu = useQuickShow((state) => state.selectedMenu);
+  const setSelectedMenu = useQuickShow((state) => state.setSelectedMenu);
+  const clearSelectedMenu = useQuickShow((state) => state.clearSelected);
+  const showButtonGroup = useQuickShow((state) => state.showButton);
+  const setShowButtonGroup = useQuickShow((state) => state.setShowButton);
 
   const closeTab = () => {
     setShowButtonGroup(false);
-    setSelectedMenu(null);
+    clearSelectedMenu();
   };
   return (
     <>
@@ -64,8 +65,8 @@ const QuicksButton = () => {
         </div>
 
         <main
-          className={` bg-white rounded-md max-h-[80vh] ease-out duration-200 ${
-            selectedMenu === null ? "w-0 h-0" : "w-[734px] h-[737px] px-8 py-6"
+          className={` bg-white rounded-md max-h-[80vh] overflow-hidden ease-out duration-200 ${
+            selectedMenu === null ? "w-0 h-0" : "w-[734px] h-[737px]"
           }`}
         >
           {selectedMenu === "chat" && <Chat />}

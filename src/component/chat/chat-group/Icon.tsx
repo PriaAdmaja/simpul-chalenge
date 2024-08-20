@@ -1,9 +1,12 @@
+import { ComponentPropsWithoutRef } from "react";
 import iconPersonGray from "../../../assets/icons/icon-person-gray.svg";
 import iconPerson from "../../../assets/icons/icon-person.svg";
 
-const IconChatGroup = () => {
+type IconChatProps = ComponentPropsWithoutRef<'section'>
+
+const IconChatGroup = (props : IconChatProps) => {
   return (
-    <section className="relative h-[34px] w-[53px] cursor-pointer">
+    <section className="relative h-[34px] w-[53px] cursor-pointer" {...props}>
       <div className="w-[34px] h-[34px] rounded-full flex justify-center items-center bg-back-icon-person-bg">
         <img
           src={iconPersonGray}
