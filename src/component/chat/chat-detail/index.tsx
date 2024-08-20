@@ -10,6 +10,8 @@ import Loading from "../../Loading";
 import dayjs from "dayjs";
 import ChatBubble from "./chat-bubble.tsx";
 import ScrollableFeed from "react-scrollable-feed";
+import ChatDateSeparator from "./ChatDateSeparator.tsx";
+import NoConnection from "./NoConnection.tsx";
 
 const ChatDetail = () => {
   const chatGroupTitle = useChatStore((state) => state.chatGroup);
@@ -19,6 +21,7 @@ const ChatDetail = () => {
   const [chatData, setChatData] = useState<ChatListType[]>([]);
   const [nameList, setNameList] = useState<string[]>([]);
   const [haveNewMessage, setHaveNewMessage] = useState<boolean>(false);
+  const [noInternet, setNoInternet] = useState<boolean>(false);
 
   useEffect(() => {
     const data = [...chatList].sort(
@@ -52,6 +55,13 @@ const ChatDetail = () => {
         ])
       );
     }, 5000);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setNoInternet(true);
+    }, 7000);
     return () => clearTimeout(timeout);
   }, []);
 
@@ -107,43 +117,11 @@ const ChatDetail = () => {
                 const temp = lastDate;
                 lastDate = dayjs(datum.date).format("DD-MM-YYYY");
                 return (
-                  <>
+                  <section key={idx}>
                     {temp !== lastDate && (
-                      <div className="flex items-center justify-center gap-5 mt-7 mb-2">
-                        <div
-                          className={`h-[1px] flex-1  ${
-                            dayjs().valueOf() <
-                            dayjs(datum.date).add(4, "second").valueOf()
-                              ? "bg-[#eb5757]"
-                              : "bg-bg-main-secondary"
-                          }`}
-                        />
-                        <p
-                          className={`${
-                            dayjs().valueOf() <
-                            dayjs(datum.date).add(4, "second").valueOf()
-                              ? "text-[#eb5757]"
-                              : "text-bg-main-secondary"
-                          }`}
-                        >
-                          {dayjs().valueOf() <
-                          dayjs(datum.date).add(4, "second").valueOf()
-                            ? "New Message"
-                            : dayjs(datum.date).format("MMMM DD, YYYY")}
-                        </p>
-                        <div
-                          className={`h-[1px] flex-1  ${
-                            dayjs().valueOf() <
-                            dayjs(datum.date).add(4, "second").valueOf()
-                              ? "bg-[#eb5757]"
-                              : "bg-bg-main-secondary"
-                          }`}
-                        />
-                      </div>
+                      <ChatDateSeparator date={datum.date} />
                     )}
-
                     <ChatBubble
-                      key={idx}
                       dateTime={datum.date}
                       description={datum.description}
                       name={datum.name}
@@ -160,7 +138,7 @@ const ChatDetail = () => {
                           : "tertiary"
                       }
                     />
-                  </>
+                  </section>
                 );
               })}
           </ScrollableFeed>
@@ -176,6 +154,7 @@ const ChatDetail = () => {
           </button>
         )}
       </section>
+      {noInternet && <NoConnection />}
       <div className="flex gap-3 px-8 pb-4">
         <TypeBar />
         <Button>Send</Button>
