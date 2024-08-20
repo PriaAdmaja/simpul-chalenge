@@ -18,6 +18,7 @@ const ChatDetail = () => {
   const clearChatGroup = useChatStore((state) => state.clearChatGroup);
   const [chatData, setChatData] = useState<ChatListType[]>([]);
   const [nameList, setNameList] = useState<string[]>([]);
+  const [haveNewMessage, setHaveNewMessage] = useState<boolean>(false);
 
   useEffect(() => {
     const data = [...chatList].sort(
@@ -30,15 +31,46 @@ const ChatDetail = () => {
         name.push(data[i].name);
       }
     }
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       setNameList(name);
       setChatData(data);
     }, 1000);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setChatData((temp) =>
+        temp.concat([
+          {
+            id: 7,
+            date: dayjs().format(),
+            name: "Daniel",
+            seen: false,
+            description: "dolore placeat quibusdam ea quo ",
+          },
+        ])
+      );
+    }, 5000);
+    return () => clearTimeout(timeout);
   }, []);
 
   const deleteChat = (id: number) => {
     const temp = chatData.filter((d) => d.id !== id);
     setChatData(temp);
+  };
+
+  useEffect(() => {
+    if (chatData.find((d) => d.seen === false) !== undefined) {
+      setHaveNewMessage(true);
+    }
+  }, [chatData]);
+
+  let lastDate = "";
+
+  const showNewMessage = () => {
+    setChatData((prev) => prev.map((d) => ({ ...d, seen: true })));
+    setHaveNewMessage(false);
   };
 
   return (
@@ -66,37 +98,84 @@ const ChatDetail = () => {
         />
       </header>
       <div className="w-full h-[1px] bg-[#bdbdbd]" />
-      <section className="ml-8 mr-3 mb-1 flex-1 flex flex-col overflow-y-scroll">
+      <section className="ml-8 mr-3 mb-1 flex-1 flex flex-col overflow-y-scroll relative">
         {chatData.length > 0 ? (
           <ScrollableFeed className="pr-1">
-            {chatData.map((datum, idx) => {
-              return (
-                <ChatBubble
-                  key={idx}
-                  dateTime={datum.date}
-                  description={datum.description}
-                  name={datum.name}
-                  chatAlignment={
-                    datum.name.toLowerCase() === "you" ? "right" : "left"
-                  }
-                  dataId={datum.id}
-                  deleteChat={deleteChat}
-                  variant={
-                    nameList.indexOf(datum.name) % 3 === 0
-                      ? "primary"
-                      : nameList.indexOf(datum.name) % 2 === 0
-                      ? "secondary"
-                      : "tertiary"
-                  }
-                />
-              );
-            })}
+            {chatData
+              .filter((d) => d.seen === true)
+              .map((datum, idx) => {
+                const temp = lastDate;
+                lastDate = dayjs(datum.date).format("DD-MM-YYYY");
+                return (
+                  <>
+                    {temp !== lastDate && (
+                      <div className="flex items-center justify-center gap-5 mt-7 mb-2">
+                        <div
+                          className={`h-[1px] flex-1  ${
+                            dayjs().valueOf() <
+                            dayjs(datum.date).add(4, "second").valueOf()
+                              ? "bg-[#eb5757]"
+                              : "bg-bg-main-secondary"
+                          }`}
+                        />
+                        <p
+                          className={`${
+                            dayjs().valueOf() <
+                            dayjs(datum.date).add(4, "second").valueOf()
+                              ? "text-[#eb5757]"
+                              : "text-bg-main-secondary"
+                          }`}
+                        >
+                          {dayjs().valueOf() <
+                          dayjs(datum.date).add(4, "second").valueOf()
+                            ? "New Message"
+                            : dayjs(datum.date).format("MMMM DD, YYYY")}
+                        </p>
+                        <div
+                          className={`h-[1px] flex-1  ${
+                            dayjs().valueOf() <
+                            dayjs(datum.date).add(4, "second").valueOf()
+                              ? "bg-[#eb5757]"
+                              : "bg-bg-main-secondary"
+                          }`}
+                        />
+                      </div>
+                    )}
+
+                    <ChatBubble
+                      key={idx}
+                      dateTime={datum.date}
+                      description={datum.description}
+                      name={datum.name}
+                      chatAlignment={
+                        datum.name.toLowerCase() === "you" ? "right" : "left"
+                      }
+                      dataId={datum.id}
+                      deleteChat={deleteChat}
+                      variant={
+                        nameList.indexOf(datum.name) % 3 === 0
+                          ? "primary"
+                          : nameList.indexOf(datum.name) % 2 === 0
+                          ? "secondary"
+                          : "tertiary"
+                      }
+                    />
+                  </>
+                );
+              })}
           </ScrollableFeed>
         ) : (
           <Loading />
         )}
+        {haveNewMessage && (
+          <button
+            className="absolute left-[50%] -translate-x-[50%] bottom-0 text-primary bg-[#e9f3ff] py-1 px-3"
+            onClick={showNewMessage}
+          >
+            New Message
+          </button>
+        )}
       </section>
-
       <div className="flex gap-3 px-8 pb-4">
         <TypeBar />
         <Button>Send</Button>
