@@ -4,7 +4,7 @@
 
 /* width */
 ::-webkit-scrollbar {
-    width: 4px; /* you can shrink taken width */
+    width: 8px; /* you can shrink taken width */
   }
   
   /* Track */
@@ -15,7 +15,7 @@
   /* Handle */
   ::-webkit-scrollbar-thumb {
     background: #bdbdbd; 
-    border-radius: 2px;
+    border-radius: 4px;
   }
   
   /* Handle on hover */

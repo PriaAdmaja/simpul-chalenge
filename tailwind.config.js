@@ -16,7 +16,13 @@ export default {
         'todo-color': '#f8b76b',
         'border-dark': '#828282',
         'placeholder-color': '#333333',
-        'back-icon-person-bg': '#e0e0e0'
+        'back-icon-person-bg': '#e0e0e0',
+        'chat-bubble-first-primary': '#e5a443',
+        'chat-bubble-first-secondary': '#fceed3',
+        'chat-bubble-second-primary': '#9b51e0',
+        'chat-bubble-second-secondary': '#eedcff',
+        'chat-bubble-third-primary': '#43b78d',
+        'chat-bubble-third-secondary': '#d2f2ea',
       },
       fontFamily: {
         'lato': ['lato', ...defaultTheme.fontFamily.sans]
