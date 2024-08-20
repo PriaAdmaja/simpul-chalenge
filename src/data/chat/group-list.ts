@@ -1,11 +1,11 @@
-type ChatGroup = {
+export type ChatGroupType = {
   title: string;
   date: string;
   name: string;
   description: string;
 };
 
-export const chatGroupList: ChatGroup[] = [
+export const chatGroupList: ChatGroupType[] = [
   {
     title:
       "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
