@@ -1,12 +1,15 @@
 import dayjs from "dayjs";
+import { ComponentPropsWithRef, useState } from "react";
 
 type ChatBubbleType = {
   chatAlignment?: "left" | "right";
   name: string;
+  deleteChat: (id: number) => void;
   description: string;
   dateTime: Date | string;
+  dataId: number;
   variant: "primary" | "secondary" | "tertiary";
-};
+} & ComponentPropsWithRef<"section">;
 
 const ChatBubble = ({
   chatAlignment,
@@ -14,9 +17,20 @@ const ChatBubble = ({
   variant,
   description,
   dateTime,
+  deleteChat,
+  dataId,
+  ...rest
 }: ChatBubbleType) => {
+  const [showOptions, setShowOptions] = useState<boolean>(false);
+
+  const deletingData = () => {
+    setShowOptions(false);
+    setTimeout(() => {
+      deleteChat(dataId);
+    }, 500);
+  };
   return (
-    <section className="mb-2">
+    <section className="mb-2" {...rest}>
       <p
         className={`${chatAlignment === "right" ? "text-right" : "text-left"} ${
           variant === "primary"
@@ -47,7 +61,28 @@ const ChatBubble = ({
             {dayjs(dateTime).format("hh:mm")}
           </p>
         </div>
-        <button className="text-bg-main-secondary leading-[5px]">...</button>
+        <div className="relative">
+          <button
+            className="text-bg-main-secondary leading-[5px] h-1"
+            onClick={() => setShowOptions(!showOptions)}
+          >
+            ...
+          </button>
+          {showOptions && (
+            <div className=" border-border-secondary border border-solid rounded-md w-32 bg-white absolute">
+              <button className="px-4 py-2 text-[#2f80ed] hover:bg-slate-100 w-full text-start">
+                Edit
+              </button>
+              <div className="w-full h-[1px] bg-border-secondary" />
+              <button
+                className="px-4 py-2 text-[#eb5757] hover:bg-slate-100 w-full text-start"
+                onClick={deletingData}
+              >
+                Delete
+              </button>
+            </div>
+          )}
+        </div>
       </section>
     </section>
   );

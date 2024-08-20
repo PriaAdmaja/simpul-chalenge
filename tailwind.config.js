@@ -15,6 +15,7 @@ export default {
         'chat-color': '#8785ff',
         'todo-color': '#f8b76b',
         'border-dark': '#828282',
+        'border-secondary': '#bdbdbd',
         'placeholder-color': '#333333',
         'back-icon-person-bg': '#e0e0e0',
         'chat-bubble-first-primary': '#e5a443',

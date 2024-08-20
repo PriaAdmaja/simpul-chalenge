@@ -9,6 +9,7 @@ import { chatList, ChatListType } from "../../../data/chat/chat-list";
 import Loading from "../../Loading";
 import dayjs from "dayjs";
 import ChatBubble from "./chat-bubble.tsx";
+import ScrollableFeed from "react-scrollable-feed";
 
 const ChatDetail = () => {
   const chatGroupTitle = useChatStore((state) => state.chatGroup);
@@ -35,6 +36,11 @@ const ChatDetail = () => {
     }, 1000);
   }, []);
 
+  const deleteChat = (id: number) => {
+    const temp = chatData.filter((d) => d.id !== id);
+    setChatData(temp);
+  };
+
   return (
     <section className="flex flex-col h-full">
       <header className="flex gap-4 items-center px-8 py-4">
@@ -60,28 +66,32 @@ const ChatDetail = () => {
         />
       </header>
       <div className="w-full h-[1px] bg-[#bdbdbd]" />
-      <section className="px-4 pr-2 mx-4 mb-1 flex-1 flex flex-col overflow-y-scroll">
+      <section className="ml-8 mr-3 mb-1 flex-1 flex flex-col overflow-y-scroll">
         {chatData.length > 0 ? (
-          chatData.map((datum, idx) => {
-            return (
-              <ChatBubble
-                key={idx}
-                dateTime={datum.date}
-                description={datum.description}
-                name={datum.name}
-                chatAlignment={
-                  datum.name.toLowerCase() === "you" ? "right" : "left"
-                }
-                variant={
-                  nameList.indexOf(datum.name) % 3 === 0
-                    ? "primary"
-                    : nameList.indexOf(datum.name) % 2 === 0
-                    ? "secondary"
-                    : "tertiary"
-                }
-              />
-            );
-          })
+          <ScrollableFeed className="pr-1">
+            {chatData.map((datum, idx) => {
+              return (
+                <ChatBubble
+                  key={idx}
+                  dateTime={datum.date}
+                  description={datum.description}
+                  name={datum.name}
+                  chatAlignment={
+                    datum.name.toLowerCase() === "you" ? "right" : "left"
+                  }
+                  dataId={datum.id}
+                  deleteChat={deleteChat}
+                  variant={
+                    nameList.indexOf(datum.name) % 3 === 0
+                      ? "primary"
+                      : nameList.indexOf(datum.name) % 2 === 0
+                      ? "secondary"
+                      : "tertiary"
+                  }
+                />
+              );
+            })}
+          </ScrollableFeed>
         ) : (
           <Loading />
         )}
