@@ -22,6 +22,7 @@ const ChatDetail = () => {
   const [nameList, setNameList] = useState<string[]>([]);
   const [haveNewMessage, setHaveNewMessage] = useState<boolean>(false);
   const [noInternet, setNoInternet] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>("");
 
   useEffect(() => {
     const data = [...chatList].sort(
@@ -83,6 +84,21 @@ const ChatDetail = () => {
     setHaveNewMessage(false);
   };
 
+  const sendMessage = () => {
+    setChatData((prev) =>
+      prev.concat([
+        {
+          date: dayjs().format(),
+          description: inputValue,
+          id: 20,
+          name: "You",
+          seen: true,
+        },
+      ])
+    );
+    setInputValue('');
+  };
+
   return (
     <section className="flex flex-col h-full">
       <header className="flex gap-4 items-center px-8 py-4">
@@ -118,9 +134,10 @@ const ChatDetail = () => {
                 lastDate = dayjs(datum.date).format("DD-MM-YYYY");
                 return (
                   <section key={idx}>
-                    {temp !== lastDate && (
-                      <ChatDateSeparator date={datum.date} />
-                    )}
+                    {temp !== lastDate &&
+                      datum.name.toLowerCase() !== "you" && (
+                        <ChatDateSeparator date={datum.date} />
+                      )}
                     <ChatBubble
                       dateTime={datum.date}
                       description={datum.description}
@@ -156,8 +173,10 @@ const ChatDetail = () => {
       </section>
       {noInternet && <NoConnection />}
       <div className="flex gap-3 px-8 pb-4">
-        <TypeBar />
-        <Button>Send</Button>
+        <TypeBar onChange={(d) => setInputValue(d)} value={inputValue}/>
+        <Button type="button" onClick={sendMessage}>
+          Send
+        </Button>
       </div>
     </section>
   );
