@@ -126,7 +126,7 @@ const ChatDetail = () => {
       <div className="w-full h-[1px] bg-[#bdbdbd]" />
       <section className="ml-8 mr-3 mb-1 flex-1 flex flex-col overflow-y-scroll relative">
         {chatData.length > 0 ? (
-          <ScrollableFeed className="pr-1">
+          <ScrollableFeed forceScroll className="pr-1" >
             {chatData
               .filter((d) => d.seen === true)
               .map((datum, idx) => {
