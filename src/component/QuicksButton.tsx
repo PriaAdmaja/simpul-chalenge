@@ -4,6 +4,7 @@ import bookIcon from "../assets/icons/icon-book.svg";
 import OpenedTabButton from "./OpenedTabButton";
 import Chat from "./chat";
 import { useQuickShow } from "../store/quicksApp";
+import ToDo from "./todo";
 
 const QuicksButton = () => {
   const selectedMenu = useQuickShow((state) => state.selectedMenu);
@@ -70,6 +71,7 @@ const QuicksButton = () => {
           }`}
         >
           {selectedMenu === "chat" && <Chat />}
+          {selectedMenu === "todo" && <ToDo />}
         </main>
       </section>
     </>
