@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import iconArrowLeft from "../../../assets/icons/icon-arrow-left-dark.svg";
 import iconClose from "../../../assets/icons/icon-close-dark.svg";
 import { useChatStore } from "../../../store/chat";
@@ -23,6 +23,12 @@ const ChatDetail = () => {
   const [haveNewMessage, setHaveNewMessage] = useState<boolean>(false);
   const [noInternet, setNoInternet] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
+
+  const scrollableRef = useRef<ScrollableFeed | null>(null);
+
+  const scrollToBottom = () => {
+    scrollableRef.current?.scrollToBottom();
+  };
 
   useEffect(() => {
     const data = [...chatList].sort(
@@ -82,6 +88,7 @@ const ChatDetail = () => {
   const showNewMessage = () => {
     setChatData((prev) => prev.map((d) => ({ ...d, seen: true })));
     setHaveNewMessage(false);
+    scrollToBottom();
   };
 
   const sendMessage = () => {
@@ -96,7 +103,8 @@ const ChatDetail = () => {
         },
       ])
     );
-    setInputValue('');
+    setInputValue("");
+    scrollToBottom();
   };
 
   return (
@@ -126,7 +134,7 @@ const ChatDetail = () => {
       <div className="w-full h-[1px] bg-[#bdbdbd]" />
       <section className="ml-8 mr-3 mb-1 flex-1 flex flex-col overflow-y-scroll relative">
         {chatData.length > 0 ? (
-          <ScrollableFeed forceScroll className="pr-1" >
+          <ScrollableFeed ref={scrollableRef} className="pr-1">
             {chatData
               .filter((d) => d.seen === true)
               .map((datum, idx) => {
@@ -173,7 +181,7 @@ const ChatDetail = () => {
       </section>
       {noInternet && <NoConnection />}
       <div className="flex gap-3 px-8 pb-4">
-        <TypeBar onChange={(d) => setInputValue(d)} value={inputValue}/>
+        <TypeBar onChange={(d) => setInputValue(d)} value={inputValue} />
         <Button type="button" onClick={sendMessage}>
           Send
         </Button>
