@@ -10,8 +10,7 @@ const DescriptionComponent = ({
   editDesc: (d: string) => void;
 }) => {
   const [editable, setEditable] = useState<boolean>(false);
-  const [textValue, setTextValue] = useState(desc);
-  console.log(editable);
+  
   return (
     <section className="flex gap-3 items-start">
       <button
@@ -27,15 +26,14 @@ const DescriptionComponent = ({
       </button>
       {editable ? (
         <textarea
-          value={textValue}
-          className="flex-1 bg-inherit"
+          value={desc}
+          className="flex-1 bg-inherit p-2"
           placeholder="No Description"
           onBlur={() => {
             setEditable(false);
-            editDesc(textValue);
           }}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
-            setTextValue(e.target.value);
+            editDesc(e.target.value);
           }}
           autoFocus
         />

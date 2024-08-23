@@ -4,4 +4,5 @@ export type TaskListType = {
     title: string;
     description: string;
     is_finish: boolean;
+    is_title_fix: boolean;
 }

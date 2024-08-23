@@ -2,17 +2,19 @@ import { EditTaskProps } from "..";
 import { TaskListType } from "../../../data/todo";
 import DateComponent from "./DateComponent";
 import DescriptionComponent from "./DescriptionComponent";
-import iconUncheck from "../../../assets/icons/icon-square.svg";
-import iconCheck from "../../../assets/icons/icon-checklist.svg";
+import iconUncheck from "../../../assets/icons/icon-uncheck.svg";
+import iconCheck from "../../../assets/icons/icon-check.svg";
 import TitleComponent from "./TitleComponent";
 import { useState } from "react";
 
 const Task = ({
   data,
   editTask,
+  deleteTask
 }: {
   data: TaskListType;
   editTask: (props: EditTaskProps) => void;
+  deleteTask: (id: number) => void;
 }) => {
   const [isShow, setIsShow] = useState<boolean>(true);
   const editDescription = (newDesc: string) => {
@@ -31,12 +33,20 @@ const Task = ({
     const newData = { ...data, title: newTitle };
     editTask({ id: data.id, newData });
   };
+  const editTitleStatus = (newTitleStatus: boolean) => {
+    const newData = { ...data, is_title_fix: newTitleStatus };
+    editTask({ id: data.id, newData });
+  };
+
+  const deleteData = () => {
+    deleteTask(data.id)
+  }
 
   return (
     <section className="flex items-start my-[22px]">
       <div
         className={` flex justify-center items-center ${
-          data.title === "" ? "h-10 w-10" : "w-10 mt-2"
+          data.is_title_fix === false ? "w-10 h-10" : "w-10 h-6"
         }`}
       >
         <img
@@ -53,6 +63,10 @@ const Task = ({
           dueDate={data.date}
           isShow={isShow}
           setIsShow={setIsShow}
+          deleteTask={deleteData}
+          editTitleStatus={editTitleStatus}
+          isTitleFix={data.is_title_fix}
+          isFinish={data.is_finish}
         />
 
         <section

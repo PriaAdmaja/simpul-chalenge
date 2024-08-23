@@ -3,6 +3,7 @@ import { TaskListType } from "../../data/todo";
 import Button from "../Button";
 import Task from "./task";
 import TaskTypeDropdown from "./task-type-dropdown";
+import { useRef } from "react";
 
 export type EditTaskProps = {
   newData: TaskListType;
@@ -14,8 +15,14 @@ const ToDo = () => {
     "todoList",
     []
   );
+  console.log(taskList);
+  const taskListRef = useRef<HTMLDivElement | null>(null);
 
   const createNewTask = () => {
+    taskListRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
     if (taskList.length === 0) {
       const emptyData: TaskListType = {
         id: 1,
@@ -23,6 +30,7 @@ const ToDo = () => {
         title: "",
         description: "",
         is_finish: false,
+        is_title_fix: false,
       };
       setTaskList([emptyData]);
     } else {
@@ -35,6 +43,7 @@ const ToDo = () => {
         title: "",
         description: "",
         is_finish: false,
+        is_title_fix: false,
       };
 
       const newData: TaskListType[] = [...taskList].concat([emptyData]);
@@ -49,7 +58,15 @@ const ToDo = () => {
     tempData[selectedIndex].description = newData.description;
     tempData[selectedIndex].title = newData.title;
     tempData[selectedIndex].is_finish = newData.is_finish;
+    tempData[selectedIndex].is_title_fix = newData.is_title_fix;
     setTaskList(tempData);
+  };
+
+  const deleteTask = (id: number) => {
+    const newData = [...taskList].filter((d) => d.id !== id);
+    setTimeout(() => {
+      setTaskList(newData);
+    }, 200);
   };
 
   return (
@@ -59,15 +76,18 @@ const ToDo = () => {
         <Button onClick={createNewTask}>New Task</Button>
       </header>
 
-      <section className="ml-8 mr-5 flex-1 overflow-y-scroll mt-[22px] mb-6">
+      <section
+        className="ml-8 mr-5 flex-1 overflow-y-scroll mt-[22px] mb-6"
+        ref={taskListRef}
+      >
         {taskList.map((d, i) => {
           return (
-            <>
-              <Task key={i} data={d} editTask={editTask} />
+            <section key={i}>
+              <Task data={d} editTask={editTask} deleteTask={deleteTask} />
               {i !== taskList.length - 1 && (
                 <div className="w-full h-[1px] bg-border-dark" />
               )}
-            </>
+            </section>
           );
         })}
       </section>
