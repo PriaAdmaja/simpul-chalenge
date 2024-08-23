@@ -66,7 +66,7 @@ const QuicksButton = () => {
         </div>
 
         <main
-          className={` bg-white rounded-md max-h-[80vh] overflow-hidden ease-out duration-200 ${
+          className={`bg-white rounded-md max-h-[80vh] overflow-hidden ease-out duration-200 ${
             selectedMenu === null ? "w-0 h-0" : "w-[734px] h-[737px]"
           }`}
         >

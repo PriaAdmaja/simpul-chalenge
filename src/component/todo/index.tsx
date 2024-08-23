@@ -53,12 +53,13 @@ const ToDo = () => {
   };
 
   return (
-    <>
+    <section className="flex flex-col h-full">
       <header className="flex justify-between items-center mx-8 mt-6">
         <TaskTypeDropdown />
         <Button onClick={createNewTask}>New Task</Button>
       </header>
-      <section className="mx-8">
+
+      <section className="ml-8 mr-5 flex-1 overflow-y-scroll mt-[22px] mb-6">
         {taskList.map((d, i) => {
           return (
             <>
@@ -70,7 +71,7 @@ const ToDo = () => {
           );
         })}
       </section>
-    </>
+    </section>
   );
 };
 
