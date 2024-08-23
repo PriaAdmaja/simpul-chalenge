@@ -20,7 +20,7 @@ const TaskTypeDropdown = () => {
         />
       </button>
       {isExpand && (
-        <section className="absolute border border-solid border-border-dark bg-white rounded-md w-full mt-1 overflow-hidden">
+        <section className="absolute border border-solid border-border-dark bg-white rounded-md w-full mt-1 overflow-hidden z-50">
           <button
             className="w-full py-2 px-4 font-semibold text-bg-main-secondary text-start hover:bg-slate-50"
             onClick={() => {
