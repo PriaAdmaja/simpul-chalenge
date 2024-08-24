@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { ComponentPropsWithRef, useState } from "react";
 import iconThreeDot from "../../../../assets/icons/icon-triple-dot.svg";
+import { ReplyType } from "../../../../data/chat/chat-list";
 
 type ChatBubbleType = {
   chatAlignment?: "left" | "right";
@@ -9,6 +10,8 @@ type ChatBubbleType = {
   description: string;
   dateTime: Date | string;
   dataId: number;
+  dataReply?: ReplyType;
+  setReply: ({ id, name, description }: ReplyType) => void;
   variant: "primary" | "secondary" | "tertiary";
 } & ComponentPropsWithRef<"section">;
 
@@ -20,6 +23,8 @@ const ChatBubble = ({
   dateTime,
   deleteChat,
   dataId,
+  setReply,
+  dataReply,
   ...rest
 }: ChatBubbleType) => {
   const [showOptions, setShowOptions] = useState<boolean>(false);
@@ -43,6 +48,15 @@ const ChatBubble = ({
       >
         {name}
       </p>
+      {dataReply && (
+        <div
+          className={`bg-line-primary p-2 rounded-md border border-solid border-[#e0e0e0] ${
+            chatAlignment === "right" ? "flex-row-reverse ml-auto" : "flex-row"
+          } mb-1 w-fit max-w-[70%]`}
+        >
+          <p className="text-sm text-bg-main-secondary">{dataReply.description}</p>
+        </div>
+      )}
       <section
         className={`flex ${
           chatAlignment === "right" ? "flex-row-reverse ml-auto" : "flex-row"
@@ -96,7 +110,17 @@ const ChatBubble = ({
                     Share
                   </button>
                   <div className="w-full h-[1px] bg-border-secondary" />
-                  <button className="px-4 py-2 text-[#2f80ed] hover:bg-slate-100 w-full text-start">
+                  <button
+                    className="px-4 py-2 text-[#2f80ed] hover:bg-slate-100 w-full text-start"
+                    onClick={() => {
+                      setReply({
+                        id: dataId,
+                        name: name,
+                        description: description,
+                      });
+                      setShowOptions(false);
+                    }}
+                  >
                     Reply
                   </button>
                 </>

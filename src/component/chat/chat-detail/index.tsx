@@ -5,7 +5,11 @@ import { useChatStore } from "../../../store/chat";
 import { useQuickShow } from "../../../store/quicksApp";
 import Button from "../../Button";
 import TypeBar from "./TypeBar";
-import { chatList, ChatListType } from "../../../data/chat/chat-list";
+import {
+  chatList,
+  ChatListType,
+  ReplyType,
+} from "../../../data/chat/chat-list";
 import Loading from "../../Loading";
 import dayjs from "dayjs";
 import ChatBubble from "./chat-bubble.tsx";
@@ -23,6 +27,7 @@ const ChatDetail = () => {
   const [haveNewMessage, setHaveNewMessage] = useState<boolean>(false);
   const [noInternet, setNoInternet] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
+  const [reply, setReply] = useState<ReplyType | undefined>(undefined);
 
   const scrollableRef = useRef<ScrollableFeed | null>(null);
 
@@ -93,18 +98,26 @@ const ChatDetail = () => {
 
   const sendMessage = () => {
     setChatData((prev) =>
-      prev.concat([
-        {
-          date: dayjs().format(),
-          description: inputValue,
-          id: 20,
-          name: "You",
-          seen: true,
-        },
-      ])
+      prev
+        .map((d) => ({ ...d, seen: true }))
+        .concat([
+          {
+            date: dayjs().format(),
+            description: inputValue,
+            id: 20,
+            name: "You",
+            seen: true,
+            reply: reply,
+          },
+        ])
     );
     setInputValue("");
     scrollToBottom();
+    setHaveNewMessage(false);
+  };
+
+  const clearReply = () => {
+    setReply(undefined);
   };
 
   return (
@@ -154,6 +167,8 @@ const ChatDetail = () => {
                         datum.name.toLowerCase() === "you" ? "right" : "left"
                       }
                       dataId={datum.id}
+                      dataReply={datum.reply}
+                      setReply={setReply}
                       deleteChat={deleteChat}
                       variant={
                         nameList.indexOf(datum.name) % 3 === 0
@@ -180,11 +195,18 @@ const ChatDetail = () => {
         )}
       </section>
       {noInternet && <NoConnection />}
-      <div className="flex gap-3 px-8 pb-4">
-        <TypeBar onChange={(d) => setInputValue(d)} value={inputValue} />
-        <Button type="button" onClick={sendMessage}>
-          Send
-        </Button>
+      <div className="flex gap-3 px-8 pb-4 items-end">
+        <TypeBar
+          onChange={(d) => setInputValue(d)}
+          value={inputValue}
+          replyData={reply}
+          clearReply={clearReply}
+        />
+        <div className="p-[1px]">
+          <Button type="button" onClick={sendMessage}>
+            Send
+          </Button>
+        </div>
       </div>
     </section>
   );

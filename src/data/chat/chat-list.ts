@@ -4,6 +4,13 @@ export type ChatListType = {
   name: string;
   description: string;
   seen?: boolean;
+  reply?: ReplyType;
+};
+
+export type ReplyType = {
+  id: number;
+  name: string;
+  description: string;
 };
 
 export const chatList: ChatListType[] = [
@@ -52,6 +59,11 @@ export const chatList: ChatListType[] = [
     date: "2023-08-30T11:42:20Z",
     name: "Daniel",
     seen: true,
+    reply: {
+      id: 4,
+      name: 'Pria',
+      description:  "ut aspernatur corporis harum nihil quis provident sequi mollitia nobis aliquid molestiae perspiciatis et ea nemo ab reprehenderit accusantium quas voluptate dolores velit et doloremque molestiae"
+    },
     description: "dolore placeat quibusdam ea quo ",
   },
 ];
