@@ -19,6 +19,8 @@ const ChatDateSeparator = ({ date }: { date: string | Date }) => {
       >
         {dayjs().valueOf() < dayjs(date).add(4, "second").valueOf()
           ? "New Message"
+          : dayjs().format("YYYY-MM-DD") === dayjs(date).format("YYYY-MM-DD")
+          ? `Today, ${dayjs(date).format("MMMM DD, YYYY")}`
           : dayjs(date).format("MMMM DD, YYYY")}
       </p>
       <div
