@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { ComponentPropsWithRef, useState } from "react";
+import iconThreeDot from "../../../../assets/icons/icon-triple-dot.svg";
 
 type ChatBubbleType = {
   chatAlignment?: "left" | "right";
@@ -62,12 +63,14 @@ const ChatBubble = ({
           </p>
         </div>
         <div className="relative">
-          <button
-            className="text-bg-main-secondary leading-[5px] h-1"
-            onClick={() => setShowOptions(!showOptions)}
-          >
-            ...
-          </button>
+          <div className="w-4 cursor-pointer">
+            <img
+              src={iconThreeDot}
+              alt="option"
+              className="text-bg-main-secondary w-full"
+              onClick={() => setShowOptions(!showOptions)}
+            />
+          </div>
           {showOptions && (
             <div
               className={`border-border-secondary overflow-hidden border border-solid rounded-md w-32 bg-white absolute ${
@@ -93,10 +96,7 @@ const ChatBubble = ({
                     Share
                   </button>
                   <div className="w-full h-[1px] bg-border-secondary" />
-                  <button
-                    className="px-4 py-2 text-[#2f80ed] hover:bg-slate-100 w-full text-start"
-                    
-                  >
+                  <button className="px-4 py-2 text-[#2f80ed] hover:bg-slate-100 w-full text-start">
                     Reply
                   </button>
                 </>
