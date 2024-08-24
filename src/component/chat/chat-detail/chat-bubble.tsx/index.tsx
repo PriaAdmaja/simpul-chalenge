@@ -69,17 +69,38 @@ const ChatBubble = ({
             ...
           </button>
           {showOptions && (
-            <div className={`border-border-secondary border border-solid rounded-md w-32 bg-white absolute ${chatAlignment === 'right' ? 'right-0' : 'left-0'}`}>
-              <button className="px-4 py-2 text-[#2f80ed] hover:bg-slate-100 w-full text-start">
-                Edit
-              </button>
-              <div className="w-full h-[1px] bg-border-secondary" />
-              <button
-                className="px-4 py-2 text-[#eb5757] hover:bg-slate-100 w-full text-start"
-                onClick={deletingData}
-              >
-                Delete
-              </button>
+            <div
+              className={`border-border-secondary overflow-hidden border border-solid rounded-md w-32 bg-white absolute ${
+                chatAlignment === "right" ? "right-0" : "left-0"
+              }`}
+            >
+              {name.toLowerCase() === "you" ? (
+                <>
+                  <button className="px-4 py-2 text-[#2f80ed] hover:bg-slate-100 w-full text-start">
+                    Edit
+                  </button>
+                  <div className="w-full h-[1px] bg-border-secondary" />
+                  <button
+                    className="px-4 py-2 text-[#eb5757] hover:bg-slate-100 w-full text-start"
+                    onClick={deletingData}
+                  >
+                    Delete
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button className="px-4 py-2 text-[#2f80ed] hover:bg-slate-100 w-full text-start">
+                    Share
+                  </button>
+                  <div className="w-full h-[1px] bg-border-secondary" />
+                  <button
+                    className="px-4 py-2 text-[#2f80ed] hover:bg-slate-100 w-full text-start"
+                    
+                  >
+                    Reply
+                  </button>
+                </>
+              )}
             </div>
           )}
         </div>
