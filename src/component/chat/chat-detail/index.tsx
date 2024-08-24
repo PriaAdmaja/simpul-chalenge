@@ -114,6 +114,7 @@ const ChatDetail = () => {
     setInputValue("");
     scrollToBottom();
     setHaveNewMessage(false);
+    clearReply();
   };
 
   const clearReply = () => {
