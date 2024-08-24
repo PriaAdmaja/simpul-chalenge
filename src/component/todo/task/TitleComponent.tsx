@@ -44,7 +44,11 @@ const TitleComponent = ({
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               editTitle(e.target.value);
             }}
-            onBlur={() => editTitleStatus(true)}
+            onBlur={() => {
+              if (title !== "") {
+                editTitleStatus(true);
+              }
+            }}
           />
         </section>
       ) : (
@@ -58,7 +62,7 @@ const TitleComponent = ({
           </p>
         </section>
       )}
-      {(dueDate !== null && !isFinish) && (
+      {dueDate !== null && !isFinish && (
         <p className="text-[#eb5757] min-w-fit">
           {Math.ceil(dayLeft)} Days Left
         </p>
